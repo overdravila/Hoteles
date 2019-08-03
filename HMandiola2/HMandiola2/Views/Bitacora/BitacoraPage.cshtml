@@ -1,0 +1,157 @@
+﻿
+@{
+    ViewBag.Title = "BitacoraPage";
+
+    List<HMandiola2.Data.sproc_hoteles_GetBitacora_Result> listaBitacora;
+    HMandiola2.Data.sproc_hoteles_GetBitacora_Result bitacora = null;
+
+    if (ViewData["listaBitacora"] != null)
+    {
+        listaBitacora = ViewData["listaBitacora"] as List<HMandiola2.Data.sproc_hoteles_GetBitacora_Result>;
+
+        for (int x = 0; x < listaBitacora.Count(); x++)
+        {
+            bitacora = listaBitacora[x];
+            break;
+        }
+    }
+}
+
+<div align="center">
+
+    <div class="container divForm col-md-offset-4 col-md-5 text-center mediumContainer">
+        <div class="row ">
+            <div class="col-lg-8 col-lg-offset-2 text-center">
+                <h1>
+                    <bold>
+                        Bitacora
+                    </bold>
+                </h1>
+
+            </div>
+            <div class="col-md-10 col-md-offset-1 text-left ">
+                @{
+                    if (bitacora != null)
+                    {
+                        <h3>
+                            Bitacora
+                        </h3>
+                        <input type="text" class="form-control col-lg-12 col-md-12 col-xs-12" id="idcambio" value="@bitacora.ID_Cambio">
+
+                        <h3>
+                            Usuario
+                        </h3>
+                        <input type="text" class="form-control col-lg-12 col-md-12 col-xs-12" id="usuario" value="@bitacora.Usuario_Cedula">
+
+                        <h3>
+                            Tipo
+                        </h3>
+                        <input type="text" class="form-control col-lg-12 col-md-12 col-xs-12" id="tipo" value="@bitacora.Tipo">
+
+                        <h3>
+                            Fecha
+                        </h3>
+                        <input type="text" class="form-control col-lg-12 col-md-12 col-xs-12" id="fecha" value="@bitacora.Fecha">
+
+                        <h3>
+                            Codigo de Registro
+                        </h3>
+                        <input type="text" class="form-control col-lg-12 col-md-12 col-xs-12" id="registro" value="@bitacora.ID_Registro">
+
+                        <h3>
+                            Descripcion
+                        </h3>
+                        <input type="text" class="form-control col-lg-12 col-md-12 col-xs-12" id="descripcion" value="@bitacora.Descripcion">
+
+                        <h3>
+                            Detalles
+                        </h3>
+                        <input type="text" class="form-control col-lg-12 col-md-12 col-xs-12" id="detalle" value="@bitacora.Detalles">
+
+                    }
+                    else
+                    {
+                        <h3>
+                            Bitacora
+                        </h3>
+                        <input type="text" class="form-control col-lg-12 col-md-12 col-xs-12" id="idcambio" value="@bitacora.ID_Cambio">
+
+                        <h3>
+                            Usuario
+                        </h3>
+                        <input type="text" class="form-control col-lg-12 col-md-12 col-xs-12" id="usuario" value="@bitacora.Usuario_Cedula">
+
+                        <h3>
+                            Tipo
+                        </h3>
+                        <input type="text" class="form-control col-lg-12 col-md-12 col-xs-12" id="tipo" value="@bitacora.Tipo">
+
+                        <h3>
+                            Fecha
+                        </h3>
+                        <input type="text" class="form-control col-lg-12 col-md-12 col-xs-12" id="fecha" value="@bitacora.Fecha">
+
+                        <h3>
+                            Codigo de Registro
+                        </h3>
+                        <input type="text" class="form-control col-lg-12 col-md-12 col-xs-12" id="registro" value="@bitacora.ID_Registro">
+
+                        <h3>
+                            Descripcion
+                        </h3>
+                        <input type="text" class="form-control col-lg-12 col-md-12 col-xs-12" id="descripcion" value="@bitacora.Descripcion">
+
+                        <h3>
+                            Detalles
+                        </h3>
+                        <input type="text" class="form-control col-lg-12 col-md-12 col-xs-12" id="detalle" value="@bitacora.Detalles">
+                    }
+                }
+
+                <button type="submit" id="saveButton" name="saveButton" value="saveButton"
+                        class="btn btn-primary btn-xl col-lg-12 col-md-12 col-xs-12" style="margin-bottom:100px;">
+                    Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // Evento que envía una petición Ajax al servidor
+    $('#saveButton').click(function (e) {
+
+        var bitacora = {
+            ID_Cambio: $('#idcambio').val(),
+                Usuario_Cedula: $('#usuario').val(),
+                Tipo: $('#tipo').val(),
+                Fecha: $('#fecha').val(),
+                ID_Registro: $('#registro').val(),
+                Descripcion: $('#descripcion').val(),
+                Detalles: $('#detalle').val(),
+            };
+
+                 $.ajax({
+                type: "POST",
+                url: '@Url.Action("insertarBitacora", "Bitacora")',
+            processData: false,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(bitacora),
+            success: function (response) {
+                if (response.Success == true) {
+                    alert('Bitacora agregada correctamente!!');
+                    location.href = "@Url.Action("Index", "Bitacora")";
+                }else {
+                    alert('Ha ocurrido un problema, intentalo mas tarde!!');
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                  alert('Error!!');
+            }
+        });
+
+
+});
+
+</script>
+

@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewBag.Title = "View";
+}
+
+<div id="here_table"></div>
+
+<div>
+    <button id="buttonNuevoBitacora" name="buttonNuevoBitacora" type="button" class="btn btn-primary">Nuevo Cambio</button>
+
+</div>
+
+<script>
+
+    $('#buttonNuevoBitacora').click(function (e) {
+           location.href = "@Url.Action("BitacoraPage", "Bitacora")";
+    });
+
+         $.ajax({
+            type: "GET",
+            url: '@Url.Action("devuelveBitacora", "Bitacora")',
+            processData: false,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+
+                if (response.Success == true) {
+
+                    var content = "<table class='table'>";
+                    content += "<thead class='thead-dark'>";
+                    content += "<tr>";
+                    content += "<th>Codigo</th>";
+                    content += "<th>Usuario</th>";
+                    content += "<th>Tipo</th>";
+                    content += "<th>Fecha</th>";
+                    content += "<th>Codigo de Registro</th>";
+                    content += "<th>Descricpcion</th>";
+                    content += "<th>Detalles</th>";
+                    content += "</tr>";
+                    content += "</thead>";
+                    content += "<tbody>";
+
+                    for (var x = 0; x < response.Data.length; x++) {
+                        content += '<tr class="clickableRow" onclick="clicRow(' + response.Data[x].Cedula + ')">';
+                        content += '<td>' + response.Data[x].ID_Cambio + '</td>';
+                        content += '<td>' + response.Data[x].Usuario_Cedula + '</td>';
+                        content += '<td>' + response.Data[x].Tipo + '</td>';
+                        content += '<td>' + response.Data[x].Fecha + '</td>';
+                        content += '<td>' + response.Data[x].ID_Registro + '</td>';
+                        content += '<td>' + response.Data[x].Descripcion + '</td>';
+                        content += '<td>' + response.Data[x].Detalles + '</td>';
+                        content += '<td><a href="/Bitacora/BitacoraPage?cambio_id=' + response.Data[x].ID_Cambio + '">Editar</a></td>';
+                        content += '<td><a href="/Bitacora/Borrar?cambio_id=' + response.Data[x].ID_Cambio + '">Eliminar</a></td>';
+                        content += '</tr>';
+                    }
+                    content += "</tbody>";
+                    content += "</table>"
+
+                    $('#here_table').append(content);
+
+                } else {
+                    alert('Ha ocurrido un problema, intentalo mas tarde!!');
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                alert('Error!!');
+            }
+    });
+
+
+
+</script>
+
+

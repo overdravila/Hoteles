@@ -1,0 +1,84 @@
+﻿
+<link rel="stylesheet" href="~/Assets/css/bootstrap-datetimepicker.css">
+<script src="~/Assets/js/bootstrap-datetimepicker.js"></script>
+<div style="margin-bottom:20px;  display: inline-block;">
+    Fecha inicio: <input size="16" type="text" value="@DateTime.Now" readonly class="form_datetime" id="fechainicio">
+    Fecha fin: <input size="16" type="text" value="@DateTime.Now" readonly class="form_datetime" id="fechafin">
+</div>
+
+<div id="here_table"></div>
+<button type="submit" id="searchButton" name="searchButton" value="searchButton"
+        class="btn btn-primary btn-xl col-lg-3 col-md-3 col-xs-3" style="margin-bottom:100px;">
+    Ingresar
+</button>
+<script>
+    getCall("", "");
+
+    $('#searchButton').click(function (e) {
+        getCall($("#fechainicio").val(), $("#fechafin").val());
+    });
+
+
+    function getCall(fechainicio, fechafin) {
+
+        $('#here_table').empty();
+        $.ajax({
+            type: "GET",
+            url: "/Error/devuelveActividades?fechainicio=" + fechainicio + "&fechaFin=" + fechafin,
+            processData: false,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+
+                if (response.Success == true) {
+
+                    var content = "<table class='table'>";
+                    content += "<thead class='thead-dark'>";
+                    content += "<tr>";
+                    content += "<th>Codigo</th>";
+                    content += "<th>Fecha</th>";
+                    content += "<th>Descripcion</th>";
+                    content += "</thead>";
+                    content += "<tbody>";
+
+                    for (var x = 0; x < response.Data.length; x++) {
+                        content += '<tr>';
+                        content += '<td>' + response.Data[x].ID_Error + '</td>';
+                        content += '<td>' + response.Data[x].Fecha + '</td>';
+                        content += '<td>' + response.Data[x].Descripcion + '</td>';
+                    }
+                    content += "</tbody>";
+                    content += "</table>"
+
+                    $('#here_table').append(content);
+
+                } else {
+                    alert('Ha ocurrido un problema, intentalo mas tarde!!');
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                alert('Error!!');
+            }
+        });
+    }
+    $("#fechainicio").datetimepicker({
+        format: "MM/dd/yyyy",
+        autoclose: true,
+        todayBtn: true,
+        pickerPosition: "bottom-left",
+        startDate: "@DateTime.Now",
+        initialDate: "@DateTime.Now"
+    });
+
+    $("#fechafin").datetimepicker({
+        format: "MM/dd/yyyy",
+        autoclose: true,
+        todayBtn: true,
+        pickerPosition: "bottom-left",
+        startDate: "@DateTime.Now",
+        initialDate: "@DateTime.Now"
+    });
+
+</script>
+
+

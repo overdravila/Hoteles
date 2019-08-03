@@ -1,0 +1,9 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    HMandiola2.Data.sproc_hoteles_LoginUsuario_Result usuario =
+        (HMandiola2.Data.sproc_hoteles_LoginUsuario_Result)System.Web.HttpContext.Current.Session["usuarioLogueado"];
+}
+
+<h2>Bienvenido - @usuario.nombre @usuario.primerApellido @usuario.segundoApellido</h2>
+
